@@ -1,16 +1,18 @@
 import numpy as np
 from sklearn.metrics import roc_auc_score, roc_curve
 
-def auc_score(infected_nodes, centrality_measures):
+def auc_score(infected_nodes, centrality_measures, observed_nodes = None):
     """
-    Calculate the AUC score and ROC curve, given the set of infected nodes
-    and the network centrality measure used for ranking.
+    Calculate the AUC score and ROC curve, given the set of infected nodes,
+    the network centrality measure used for ranking, and an optional list
+    of observed nodes to be excluded from the calculation.
 
     Parameters:
     - infected_nodes: List of infected nodes
     - centrality_measures: Dictionary where the keys are node indices and
                            the values are their corresponding centrality
                            measures (e.g., degree, betweenness, etc.)
+    - observed_nodes : List of node indices to exclude (optional)
     
     Returns:
     - auc: The Area Under the Curve (AUC) score
@@ -18,18 +20,23 @@ def auc_score(infected_nodes, centrality_measures):
              True Positive Rate (TPR), and thresholds for
              plotting the ROC curve
     """
-    centrality_values = list(centrality_measures.values())
-    n = len(centrality_values)
+    if observed_nodes is None:
+        observed_nodes = []
 
-    # Ground truth labels
-    y_true = np.zeros(n)
-    # Set the infected nodes to have a label of 1
-    for i in infected_nodes:
-        y_true[i] = 1
+    # Filter out observed nodes
+    evaluation_nodes = [node for node in centrality_measures if node not in observed_nodes]
+
+    # Build ground truth and scores
+    y_true = []
+    y_scores = []
+
+    for node in evaluation_nodes:
+        y_true.append(1 if node in infected_nodes else 0)
+        y_scores.append(centrality_measures[node])
 
     # Compute the AUC score
-    auc = roc_auc_score(y_true, centrality_values)
+    auc = roc_auc_score(y_true, y_scores)
     # Compute the ROC curve
-    curve = roc_curve(y_true, centrality_values)
+    curve = roc_curve(y_true, y_scores)
 
     return auc, curve
