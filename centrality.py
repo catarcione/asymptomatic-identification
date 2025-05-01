@@ -28,7 +28,7 @@ def contact(graph, observed_nodes):
     for node in graph.nodes():
         neighbors = list(graph.neighbors(node))
         num_infected_neighbors = sum(1 for neighbor in neighbors if neighbor in observed_nodes)
-        frac_infected_neighbors = num_infected_neighbors/len(neighbors)
+        frac_infected_neighbors = num_infected_neighbors/len(neighbors) if neighbors else 0.0
         contact[node] = frac_infected_neighbors
     
     return contact

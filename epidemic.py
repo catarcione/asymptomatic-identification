@@ -9,17 +9,17 @@ def si_epidemic(graph, beta, initial_infected_count=1, max_iterations=None, max_
     - graph: NetworkX graph
     - beta: Probability of infection per contact
     - initial_infected_count: Number of initually infected nodes
-    - max_interations: Maximum number of iterations (None to ignore)
+    - max_iterations: Maximum number of iterations (None to ignore)
     - max_infected_frac: Maximum fraction of infected nodes before stopping (None to ignore)
 
     Returns:
     - A list containing the infected nodes at the end of the simulation.
     """
-    # Ensure that at least one stop condition (max_terations or max_infected_frac) is provided
+    # Ensure that at least one stop condition (max_iterations or max_infected_frac) is provided
     if max_iterations is None and max_infected_frac is None:
-        raise ValueError("At least onde of max_iterations or max_infected_frac must be provided.")
+        raise ValueError("At least one of max_iterations or max_infected_frac must be provided.")
     
-    initial_infected = random.choices(list(graph.nodes()), k=initial_infected_count) # Randomly select the initial infected nodes from the graph
+    initial_infected = random.sample(list(graph.nodes()), k=initial_infected_count) # Randomly select the initial infected nodes from the graph
     infected = set(initial_infected)
     iteration = 0
 
