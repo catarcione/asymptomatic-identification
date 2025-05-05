@@ -60,7 +60,6 @@ def top_k_score(infected_nodes, centrality_measures, observed_nodes, top_k):
     """
     # Filter out observed nodes
     evaluation_nodes = [node for node in centrality_measures if node not in observed_nodes]
-    top_k = max(1, int(top_k*len(evaluation_nodes)))
 
     # Build ground truth and scores
     y_true = []

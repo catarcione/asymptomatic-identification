@@ -32,7 +32,7 @@ def si_epidemic(graph, beta, initial_infected_count=1, max_iterations=None, max_
         if max_infected is not None and len(infected) >= max_infected:
             break
 
-        new_infected = set() # Store new infections in this time step
+        new_infected = set()        
         infected_list = list(infected)
         random.shuffle(infected_list) # Shuffle list of infected nodes to avoid bias
 
